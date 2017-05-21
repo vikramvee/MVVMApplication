@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="MVVMApplication.View.PersonCollection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MVVMApplication.View"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:Infra="clr-namespace:MVVMApplication.Infra"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="3"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            </Style.Setters>
+        </Style>
+        <Style TargetType="TextBox">
+            <Style.Setters>
+                <Setter Property="Width" Value="80"></Setter>
+                <Setter Property="Margin" Value="3"></Setter>
+            </Style.Setters>
+        </Style>
+        <Style TargetType="Button">
+            <Style.Setters>
+                <Setter Property="Margin" Value="3"></Setter>
+            </Style.Setters>
+        </Style>
+        <ObjectDataProvider x:Key="professionEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="Infra:Profession"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0" ItemsSource="{Binding PersonCollection}" 
+                  SelectedItem="{Binding SelectedPerson,Mode=TwoWay}"></DataGrid>
+        <Grid Grid.Row="1" DataContext="{Binding SelectedPerson}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="First Name"></TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Last Name"></TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="City"></TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="3" Text="Profession"></TextBlock>
+
+            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding FirstName}"></TextBox>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding LastName}"></TextBox>
+            <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding CityOfResidence}"></TextBox>
+            <ComboBox Grid.Row="1" Grid.Column="3" SelectedItem="{Binding Profession}"
+                      ItemsSource="{Binding Source={StaticResource professionEnum}}"></ComboBox>
+        </Grid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Command="{Binding Add}" Content="Add New"></Button>
+            <Button Command="{Binding Save}" Content="Update"></Button>
+            <Button Command="{Binding Delete}" Content="Delete"></Button>
+        </StackPanel>
+    </Grid>
+</UserControl>
